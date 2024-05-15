@@ -1,5 +1,4 @@
 import { Card, CardFooter, Image } from "@nextui-org/react";
-import React from "react";
 
 interface ISelectableProps {
   label: string;
@@ -15,8 +14,9 @@ export const Selectable = ({
   return (
     <Card
       isFooterBlurred
-      className="p-0 m-o w-full h-full"
-      shadow="lg"
+      className="p-0 m-o w-full h-full relative"
+      shadow="none"
+      radius="md"
       isPressable
       onPress={onClick}
       classNames={{
@@ -27,6 +27,7 @@ export const Selectable = ({
         alt={label}
         width="100%"
         height="100%"
+        radius="md"
         className="object-cover"
         src="https://www.mediacenterone.mx/wp-content/uploads/2021/04/ff01cba7-marketing-y-ventas-roi.jpg"
       />
