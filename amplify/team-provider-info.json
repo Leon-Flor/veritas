@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-veritas-dev-2efa0-authRole",
-      "UnauthRoleArn": "arn:aws:iam::891377191939:role/amplify-veritas-dev-2efa0-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::891377191939:role/amplify-veritas-dev-2efa0-authRole",
+      "AuthRoleName": "amplify-veritas-dev-ba718-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377191939:role/amplify-veritas-dev-ba718-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377191939:role/amplify-veritas-dev-ba718-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-veritas-dev-2efa0-deployment",
-      "UnauthRoleName": "amplify-veritas-dev-2efa0-unauthRole",
-      "StackName": "amplify-veritas-dev-2efa0",
-      "StackId": "arn:aws:cloudformation:us-east-1:891377191939:stack/amplify-veritas-dev-2efa0/16f39fe0-1349-11ef-a584-0e7fd6990f41",
-      "AmplifyAppId": "d2sm71byzz3oht"
+      "DeploymentBucketName": "amplify-veritas-dev-ba718-deployment",
+      "UnauthRoleName": "amplify-veritas-dev-ba718-unauthRole",
+      "StackName": "amplify-veritas-dev-ba718",
+      "StackId": "arn:aws:cloudformation:us-east-1:891377191939:stack/amplify-veritas-dev-ba718/cb93a5a0-13c9-11ef-be8b-0e24ab67d8db",
+      "AmplifyAppId": "d1b097hdezjk31"
     },
     "categories": {
       "auth": {
-        "veritas32275d6d": {}
+        "veritasa382dfe2": {}
       }
     }
   }
