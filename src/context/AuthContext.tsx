@@ -1,53 +1,161 @@
-import { createContext, useState, ReactNode, useContext } from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
+import {
+  signIn,
+  signOut,
+  signUp,
+  confirmSignUp,
+  fetchUserAttributes,
+  fetchAuthSession,
+} from "aws-amplify/auth";
+
+import { useLog } from "@/utils/consoleUtils";
 
 export interface IUser {
+  userId?: string;
   name: string;
   email: string;
-  avatar: string;
+  picture: string;
 }
 
-interface IAuthContextEntity {
+export interface IAuthContextEntity {
   user?: IUser;
   isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
+  handleSignUp: (
+    name: string,
+    email: string,
+    picture: string,
+    password: string
+  ) => Promise<string>;
+  handleLogin: (username: string, password: string) => Promise<string | Error>;
+  handleLogout: () => void;
+  handleConfirmSignUp: (name: string, OTP: string) => Promise<string | Error>;
 }
 
-const AuthContext = createContext<undefined | IAuthContextEntity>(undefined);
+export const AuthContext = createContext<undefined | IAuthContextEntity>(
+  undefined
+);
 interface IAuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<IUser>();
 
-  const login = () => {
-    setIsAuthenticated(true);
-  };
+  useEffect(() => {
+    verifyAuth();
+  });
 
-  const logout = () => {
-    setIsAuthenticated(false);
-  };
+  const verifyAuth = async () => {
+    try {
+      const { tokens } = await fetchAuthSession();
 
-  const user: IUser = isAuthenticated
-    ? {
-        name: "Banco de alimentos",
-        email: "bancodealimentos@gmail.com",
-        avatar:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWzrRCBf9_ajmJcYsqF9ZlR08QrntLhlv5WMsxIqz31A&s",
+      if (tokens) {
+        setIsAuthenticated(true);
+        const attributes = await fetchUserAttributes();
+        setUser({
+          name: attributes?.name || "",
+          email: attributes?.email || "",
+          picture: attributes?.picture || "",
+          userId: attributes?.sub || "",
+        });
+      } else {
+        setIsAuthenticated(false);
       }
-    : undefined;
+    } catch (error) {
+      useLog.error("Failed to verify authentication", error);
+      setIsAuthenticated(false);
+    }
+  };
+
+  const handleSignUp = async (
+    name: string,
+    email: string,
+    picture: string,
+    password: string
+  ) => {
+    try {
+      await signUp({
+        username: name,
+        password: password,
+        options: {
+          userAttributes: {
+            email,
+            name,
+            picture,
+          },
+        },
+      });
+
+      return "";
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const handleConfirmSignUp = async (
+    username: string,
+    code: string
+  ): Promise<string | Error> => {
+    try {
+      await confirmSignUp({ username, confirmationCode: code });
+      setIsAuthenticated(true);
+      return "";
+    } catch (error) {
+      setIsAuthenticated(false);
+      return error;
+    }
+  };
+
+  const handleLogin = async (
+    username: string,
+    password: string
+  ): Promise<string | Error> => {
+    try {
+      const signInResponse = await signIn({ username, password });
+
+      if (signInResponse.isSignedIn) {
+        const userAttributes = await fetchUserAttributes();
+        setUser({
+          userId: userAttributes.userId,
+          name: userAttributes.name,
+          email: userAttributes.email,
+          picture: userAttributes.picture,
+        });
+
+        setIsAuthenticated(true);
+        return "";
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+      return error;
+    }
+  };
+
+  const handleLogout = async () => {
+    await signOut()
+      .then(() => {
+        setUser(undefined);
+        setIsAuthenticated(false);
+        useLog.info("Logout Successful ✅ ✅ ");
+      })
+      .catch((error) => {
+        useLog.error("Logout Failed ❌ ❌ ", error);
+      });
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        handleSignUp,
+        handleLogin,
+        handleLogout,
+        handleConfirmSignUp,
+        user,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-export function useAuthProvider() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("Auth provider");
-  }
-  return context;
-}
