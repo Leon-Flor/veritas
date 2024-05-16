@@ -7,22 +7,21 @@ import "./index.css";
 import App from "@/App";
 import { AuthProvider } from "./context";
 import { store } from "@/hooks/store";
-import { Authenticator } from "@aws-amplify/ui-react";
+import { Amplify } from "aws-amplify";
+import awsExports from "./aws-exports";
+
+Amplify.configure(awsExports);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Authenticator>
-      {({ signOut, user }) => (
-        <AuthProvider>
-          <Provider store={store}>
-            <NextUIProvider>
-              <main className="light text-foreground bg-background">
-                <App />
-              </main>
-            </NextUIProvider>
-          </Provider>
-        </AuthProvider>
-      )}
-    </Authenticator>
+    <AuthProvider>
+      <Provider store={store}>
+        <NextUIProvider>
+          <main className="light text-foreground bg-background">
+            <App />
+          </main>
+        </NextUIProvider>
+      </Provider>
+    </AuthProvider>
   </React.StrictMode>
 );
