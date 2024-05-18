@@ -1,30 +1,46 @@
-# React + TypeScript + Vite
+# ¡Bienvenido a Veritas 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Veritas** es tu plataforma web para crear, gestionar y compartir cuestionarios de forma sencilla y colaborativa. 
 
-Currently, two official plugins are available:
+**¿Qué puedes hacer con Veritas?**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🆕 **Crea cuestionarios:** Diseña cuestionarios personalizados con preguntas de opción múltiple, respuesta corta, verdadero/falso y más. 
+🔧 **Gestiona tus cuestionarios:** Edita, elimina y organiza tus cuestionarios a tu gusto. ️
+🔗 **Comparte tus cuestionarios:** Comparte tus cuestionarios con tu equipo o con el mundo entero a través de un código QR único. 
+📝 **Resuelve cuestionarios:** Completa cuestionarios compartidos por otros usuarios de forma anónima o con tu nombre. 
+📊 **Analiza tus resultados:** Obtén información valiosa sobre el rendimiento de tus cuestionarios y de tu equipo. 
 
-## Expanding the ESLint configuration
+**¿Por qué usar Veritas?**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+🌟 **Fácil de usar:** Interfaz intuitiva y amigable, no necesitas conocimientos técnicos. 
+🎨 **Versátil:** Crea cuestionarios para cualquier propósito, desde evaluaciones hasta encuestas. 
+👥 **Colaborativo:** Trabaja en equipo para crear y compartir cuestionarios. 
 
-- Configure the top-level `parserOptions` property like this:
+**Tags:** #TypeScript #React #Vite #JavaScript #HTML/CSS #WebDevelopment
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+**¿Cómo empezar?**
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. **Clona este repositorio:** `git clone https://github.com/tu-nombre/veritas.git`
+2. **Instala las dependencias:**
+    * **Con Yarn:** `yarn install`
+    * **Con npm:** `npm install`
+    * **Con Bun:** `bun install`
+3. **Ejecuta la aplicación:**
+    * **Con Yarn:** `yarn start`
+    * **Con npm:** `npm start`
+    * **Con Bun:** `bun run start`
+4. **¡Empieza a crear cuestionarios** Visita `http://localhost:3000` en tu navegador web.
+
+**Tecnologías utilizadas:**
+
+🌐 **Lenguaje de programación:** TypeScript React Vite⚛️
+
+**Contribuciones:**
+
+¡Te invitamos a ser parte de Veritas Envía solicitudes de pull, reporta errores o sugiere nuevas funciones en el repositorio de GitHub. 
+
+**Licencia:**
+
+📄 MIT ⚖️
+
+**¡Veritas: donde el conocimiento crece** 🌱
