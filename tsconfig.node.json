@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "composite": true,
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["./src/app/*"]
+    },
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
