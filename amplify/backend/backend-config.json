@@ -1,6 +1,6 @@
 {
   "auth": {
-    "veritasa382dfe2": {
+    "veritas03225e11": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -49,5 +49,6 @@
         }
       ]
     }
-  }
+  },
+  "storage": {}
 }

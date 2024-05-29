@@ -3,10 +3,16 @@ import { OptionModal, QuizFragment } from "./Fragments";
 import { Button, Input } from "@nextui-org/react";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { useActions } from "./useActions";
-import { quizzes } from "../tests/useActions";
 
 export const Quizzes = () => {
-  const { modal, handleStartQuiz, handleClose, handleOpen } = useActions();
+  const {
+    quizzes,
+    modal,
+    handleStartQuiz,
+    handleCreateQuiz,
+    handleClose,
+    handleOpen,
+  } = useActions();
 
   const isPhone = window.innerWidth < 768;
 
@@ -32,7 +38,7 @@ export const Quizzes = () => {
         />
         <Button
           size="lg"
-          onPress={() => console.log("hello")}
+          onPress={handleCreateQuiz}
           color="primary"
           variant="bordered"
           className="text-3xl w-full md:w-auto hover:shadow-lg hover:shadow-primary/20 hover:scale-110 transition-all"
@@ -42,9 +48,10 @@ export const Quizzes = () => {
         </Button>
       </div>
       <div className="gap-8 grid grid-cols-1 sm:grid-cols-5 w-full h-full">
-        {quizzes.map((ques) => (
-          <QuizFragment onPress={handleOpen} question={ques} key={ques.sk} />
-        ))}
+        {quizzes &&
+          quizzes.map((ques) => (
+            <QuizFragment onPress={handleOpen} question={ques} key={ques.pk} />
+          ))}
       </div>
     </Layout>
   );

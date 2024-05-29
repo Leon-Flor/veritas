@@ -1,4 +1,4 @@
-import { IQuiz } from "@/app/apps/tests/useActions";
+import { IQuiz } from "@/api/quiz/quizEntity";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 
 interface IQuizFragment {
@@ -7,10 +7,10 @@ interface IQuizFragment {
 }
 
 export const QuizFragment = ({ question, onPress }: IQuizFragment) => {
-  const { sk, title, description, questions } = question;
+  const { pk, title, description, questions } = question;
   return (
     <Card
-      onPress={() => onPress?.(sk)}
+      onPress={() => onPress?.(pk)}
       shadow="none"
       fullWidth
       radius="lg"

@@ -35,10 +35,20 @@ export const Test = () => {
     handleConfirm,
   } = useActions(quizId);
 
+  if (questions.length === 0) {
+    return (
+      <div className="flex flex-col md:px-20 px-4 justify-center items-center gap-8 w-screen h-screen relative">
+        <h1 className="text-5xl tracking-tight font-extrabold text-black">
+          Cargando...
+        </h1>
+      </div>
+    );
+  }
+
   if (isAnswered) {
     return (
       <div className="flex flex-col md:px-20 px-4 justify-center items-center gap-8 w-screen h-screen relative">
-        {score === questions.length - 1 ? (
+        {score === questions.length ? (
           <IconTrophy size={200} className="text-green-500" />
         ) : (
           <IconX size={200} className="text-red-500" />
@@ -49,7 +59,7 @@ export const Test = () => {
         </h1>
 
         <h1 className="text-5xl tracking-tight font-extrabold text-black">
-          Puntuación: {score + " / " + (questions.length - 1)}
+          Puntuación: {score + " / " + questions.length}
         </h1>
       </div>
     );
@@ -95,10 +105,10 @@ export const Test = () => {
 
         <div
           className="w-full flex bg-red-600 md:p-8 p-4 rounded-lg justify-center items-center gap-8  text-white cursor-pointer"
-          onClick={() => speechText("¿" + questions[question].text + "?")}
+          onClick={() => speechText("¿" + questions[question].question + "?")}
         >
           <h2 className="text-3xl font-bold text-center truncate">
-            {questions[question].text}
+            {questions[question].question}
           </h2>
           <IconVolume size={40} />
         </div>
@@ -137,12 +147,12 @@ export const Test = () => {
       {questions && questions[question] && (
         <main className="w-full rounded-xl overflow-y-scroll relative">
           <ol className="gap-4 md:grid md:grid-cols-4 flex flex-col relative">
-            {questions[question].answers.map(({ sk, text }) => (
+            {questions[question].answers.map(({ id, text }) => (
               <Selectable
                 label={text}
-                selected={selected === sk}
-                key={sk}
-                onClick={() => setSelected(sk)}
+                selected={selected === id}
+                key={id}
+                onClick={() => setSelected(id)}
               />
             ))}
           </ol>

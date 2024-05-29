@@ -8,4 +8,5 @@ export interface IParticipant {
   id: number;
   name: string;
   score: number;
+  answersFailed: string[];
 }

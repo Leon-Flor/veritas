@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "veritasa382dfe2_identitypool_a382dfe2",
+    "identityPoolName": "veritas03225e11_identitypool_03225e11",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "veritaa382dfe2",
-    "userPoolName": "veritasa382dfe2_userpool_a382dfe2",
+    "resourceNameTruncated": "verita03225e11",
+    "userPoolName": "veritas03225e11_userpool_03225e11",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,10 +31,10 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "veritaa382dfe2_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "verita03225e11_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "a382dfe2",
-    "resourceName": "veritasa382dfe2",
+    "sharedId": "03225e11",
+    "resourceName": "veritas03225e11",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "userPoolGroupList": [],

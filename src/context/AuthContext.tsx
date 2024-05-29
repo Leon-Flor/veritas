@@ -39,19 +39,18 @@ interface IAuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [user, setUser] = useState<IUser>();
 
-  useEffect(() => {
-    verifyAuth();
-  });
+  // useEffect(() => {
+  //   verifyAuth();
+  // }, [isAuthenticated, user, setUser, setIsAuthenticated]);
 
   const verifyAuth = async () => {
     try {
       const { tokens } = await fetchAuthSession();
 
       if (tokens) {
-        setIsAuthenticated(true);
         const attributes = await fetchUserAttributes();
         setUser({
           name: attributes?.name || "",
@@ -59,11 +58,12 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
           picture: attributes?.picture || "",
           userId: attributes?.sub || "",
         });
+
+        setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
       }
     } catch (error) {
-      useLog.error("Failed to verify authentication", error);
       setIsAuthenticated(false);
     }
   };
@@ -74,37 +74,32 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     picture: string,
     password: string
   ) => {
-    try {
-      await signUp({
-        username: name,
-        password: password,
-        options: {
-          userAttributes: {
-            email,
-            name,
-            picture,
-          },
+    await signUp({
+      username: name,
+      password: password,
+      options: {
+        userAttributes: {
+          email,
+          name,
+          picture,
         },
-      });
-
-      return "";
-    } catch (error) {
+      },
+    }).catch((error) => {
       return error;
-    }
+    });
+
+    return "";
   };
 
   const handleConfirmSignUp = async (
     username: string,
     code: string
   ): Promise<string | Error> => {
-    try {
-      await confirmSignUp({ username, confirmationCode: code });
-      setIsAuthenticated(true);
-      return "";
-    } catch (error) {
-      setIsAuthenticated(false);
+    await confirmSignUp({ username, confirmationCode: code }).catch((error) => {
       return error;
-    }
+    });
+
+    return "";
   };
 
   const handleLogin = async (
@@ -122,22 +117,18 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
           email: userAttributes.email,
           picture: userAttributes.picture,
         });
-
-        setIsAuthenticated(true);
-        return "";
       }
     } catch (error) {
-      setIsAuthenticated(false);
       return error;
     }
+
+    return "";
   };
 
   const handleLogout = async () => {
     await signOut()
       .then(() => {
         setUser(undefined);
-        setIsAuthenticated(false);
-        useLog.info("Logout Successful ✅ ✅ ");
       })
       .catch((error) => {
         useLog.error("Logout Failed ❌ ❌ ", error);

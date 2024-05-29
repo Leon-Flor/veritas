@@ -1,55 +1,25 @@
-import { useRef, useState } from "react";
-import { v4 as uuidV4 } from "uuid";
+import { useEffect, useRef, useState } from "react";
 import { useTextToSpeech } from "../../../utils/textToSpeechUtils";
 import { useNavigate } from "react-router-dom";
-import { useEncrypterHash } from "@/utils/encrypterHash";
-import { useLog } from "@/utils/consoleUtils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import confetti from "canvas-confetti";
 import {
   newParticipant,
   selectParticipant,
   setScore,
+  setAnswersFailed,
+  resetParticipant,
 } from "@/features/quizSlice";
-
-export interface IQuiz {
-  sk: string;
-  title: string;
-  description: string;
-  questions: IQuestions[];
-}
-
-export interface IQuestions {
-  sk: string;
-  text: string;
-  type: string;
-  correctAnswer: string;
-  answers: {
-    sk: string;
-    text: string;
-  }[];
-}
-
-export const quizzes: IQuiz[] = Array.from({ length: 80 }, (_, i) => ({
-  sk: uuidV4(),
-  title: `Quiz ${i + 1}`,
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  questions: Array.from({ length: Math.random() * 10 }, (_, j) => ({
-    sk: uuidV4(),
-    text: `Pregunta ${j + 1}`,
-    type: "hash-q",
-    correctAnswer: `Answer ${j + 1}`,
-    answers: Array.from({ length: 5 }, (_, j) => ({
-      sk: uuidV4(),
-      text: `Answer ${j + 1}`,
-    })),
-  })),
-}));
+import { useGetQuizByIdQuery } from "@/api/quizzesApi";
 
 export const useActions = (quizId: string) => {
   const dispatch = useAppDispatch();
-  const { id, name, score } = useAppSelector(selectParticipant);
+  const { speechText } = useTextToSpeech();
+  const navigate = useNavigate();
+  const { name, score } = useAppSelector(selectParticipant);
+
+  const { data } = useGetQuizByIdQuery(quizId);
+  const questions = data?.questions || [];
 
   const [nameInput, setNameInput] = useState<string>("");
   const [question, setQuestion] = useState<number>(0);
@@ -59,9 +29,10 @@ export const useActions = (quizId: string) => {
   const [isParticipantModalOpen, setIsParticipantModalOpen] =
     useState<boolean>(true);
 
-  const { speechText } = useTextToSpeech();
-  const navigate = useNavigate();
-  const { decryptedHash } = useEncrypterHash();
+  useEffect(() => {
+    dispatch(resetParticipant());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleStart = async () => {
     await dispatch(newParticipant({ id: 1, name, score: 0 }));
@@ -75,24 +46,16 @@ export const useActions = (quizId: string) => {
     setIsParticipantModalOpen(false);
   };
 
-  const questions =
-    quizzes.find((quiz) => quiz.sk === quizId)?.questions ||
-    quizzes[2].questions;
-
-  useLog.info(
-    "Encrypted Hash 2 :",
-    quizId,
-    "decryptedHash: ",
-    decryptedHash(quizId)
-  );
-
   const handleGoQuizzes = () => navigate("/");
 
   const nextQuestion = async () => {
-    if (question < questions.length - 1) {
-      // if (questions[question].correctAnswer === selected) {
+    if (questions[question].answer === selected) {
       dispatch(setScore(score + 1));
-      // }
+    } else {
+      dispatch(setAnswersFailed(selected));
+    }
+
+    if (questions && question >= 0 && question < questions.length - 1) {
       setQuestion(question + 1);
       setSelected("");
     }
@@ -144,7 +107,7 @@ export const useActions = (quizId: string) => {
     setIsConfirmationOpen(false);
     setIsAnswered(true);
 
-    if (score === questions.length - 1) {
+    if (score === questions.length) {
       handleConfetti();
     }
   };

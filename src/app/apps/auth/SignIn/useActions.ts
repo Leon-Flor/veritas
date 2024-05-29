@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useAuthProvider } from "@/context";
+import { useLog } from "@/utils/consoleUtils";
 
 const schema = yup.object().shape({
   name: yup.string().required("Debes de ingresar un nombre").min(3).max(20),
@@ -29,10 +30,24 @@ export const useActions = () => {
 
   const login = async () => {
     const { name, password } = getValues();
-    const error = await handleLogin(name, password);
-    if (error !== "") {
+
+    useLog.info("Logging in...");
+
+    try {
+      await handleLogin(name, password)
+        .then(() => {
+          useLog.info("Logged in!");
+        })
+        .catch((error) => {
+          setError("Error: ❌ " + error);
+        });
+    } catch (error) {
       setError("Error: ❌ " + error);
     }
+
+    // if (error !== "") {
+    //   setError("Error: ❌ " + error);
+    // }
   };
 
   return {

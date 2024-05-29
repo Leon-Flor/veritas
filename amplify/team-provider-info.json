@@ -12,14 +12,14 @@
       "AmplifyAppId": "d1b097hdezjk31"
     },
     "categories": {
-      "auth": {
-        "veritasa382dfe2": {}
-      },
       "hosting": {
         "amplifyhosting": {
           "appId": "d1b097hdezjk31",
           "type": "cicd"
         }
+      },
+      "auth": {
+        "veritas03225e11": {}
       }
     }
   }
